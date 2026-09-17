@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import uuid
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import StrEnum
 from typing import Literal
 
@@ -65,7 +65,7 @@ class Contribution:
     platforms: tuple[Platform, ...]
     status: ContributionStatus = ContributionStatus.DRAFT
     submitted_by: str | None = None
-    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
     links: tuple[ContributionLink, ...] = field(default_factory=tuple)
 
