@@ -1,0 +1,44 @@
+name: Bug report
+description: Report a reproducible defect in Traceboard.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Provide reproducible technical evidence. Do not include credentials, personal information, or private data.
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: State the defect in one sentence.
+      placeholder: The contribution registry rejects a valid platform combination.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: List the smallest reliable sequence that reproduces the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Observed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification context
+      description: Include the commit, Python version, command, and relevant test output.
+    validations:
+      required: true
