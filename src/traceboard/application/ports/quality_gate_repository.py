@@ -1,0 +1,36 @@
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ...domain.quality_gate import GateEvaluationResult, QualityGate
+
+
+class QualityGateRepository(ABC):
+    """Repository port for QualityGate aggregates."""
+
+    @abstractmethod
+    def add(self, gate: QualityGate) -> None:
+        """Add or update a quality gate."""
+        pass
+
+    @abstractmethod
+    def get(self, gate_id: str) -> QualityGate | None:
+        """Get a quality gate by ID."""
+        pass
+
+    @abstractmethod
+    def get_all(self) -> tuple[QualityGate, ...]:
+        """Get all quality gates."""
+        pass
+
+    @abstractmethod
+    def save_evaluation_result(self, result: GateEvaluationResult) -> None:
+        """Persist a gate evaluation result."""
+        pass
+
+    @abstractmethod
+    def get_evaluation_result(self, gate_id: str, context_id: str) -> GateEvaluationResult | None:
+        """Get an evaluation result for a gate and context."""
+        pass

@@ -3,6 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
+scripts = { traceboard = "traceboard.cli.main:main" }
 name = "traceboard"
 version = "0.1.0"
 description = "Traceboard: Design-system governance control room (core domain)"
