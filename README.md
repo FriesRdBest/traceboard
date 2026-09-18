@@ -1,38 +1,24 @@
 # Traceboard
 
-Design token traceability and quality gate system for design systems.
+A live design-system governance control room built with Python and Streamlit.
 
-## Features
+## Run locally
 
-- Token Tracing: Scan codebases for design token usage
-- Quality Gates: Define and enforce token quality rules
-- Component Contracts: Define required tokens for components
-- Divergence Detection: Find mismatches between platforms
-- System Maps: Visualize token dependencies
+```bash
+pip install -e .
+streamlit run app.py
+```
 
-## CLI Usage
+The first implementation branch, `feat/traceboard-design-system`, contains the complete pre-test scaffold through the responsive and accessibility implementation phase. It uses deterministic local demo data and preserves the layered package structure.
 
-### Token Trace
+## Surfaces
 
-python -m traceboard.cli.main trace ./tokens --patterns "*.json,*.css" --verbose
+- Workspace
+- Contribution Intake
+- Token Lab
+- Component Contract
+- Quality Gate
+- The Odyssey 2026
+- Release Trace
 
-### System Map
-
-python -m traceboard.cli.main map --mermaid
-
-## Architecture
-
-src/traceboard/
-  application/     # Application services
-  domain/          # Core business logic
-  infrastructure/  # External adapters
-  cli/             # Command-line interface
-
-## Development
-
-pytest -v
-pre-commit run --all-files
-
-## License
-
-MIT
+Persistence and external data integrations remain intentionally deferred until the local interaction contract is validated.
