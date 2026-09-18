@@ -131,7 +131,9 @@ def test_evaluate_unexpected_token_info() -> None:
     evaluator = DivergenceEvaluator(contract)
     report = evaluator.evaluate(platform_state)
 
-    unexpected = [d for d in report.divergences if d.divergence_type == DivergenceType.UNEXPECTED_TOKEN]
+    unexpected = [
+        d for d in report.divergences if d.divergence_type == DivergenceType.UNEXPECTED_TOKEN
+    ]
     assert len(unexpected) == 1
     assert unexpected[0].severity == DivergenceSeverity.INFO
     assert unexpected[0].details["token_name"] == "--color-legacy"

@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from .ports.component_contract_repository import ComponentContractRepository
 from ..domain.component_contract import ComponentContract, ContractRequirement, RequirementSeverity
-from ..domain.divergence_evaluator import DivergenceEvaluator, PlatformState
-from ..domain.platform_divergence import DivergenceReport
+from ..domain.divergence_evaluator import PlatformState
+
+if TYPE_CHECKING:
+    from ..domain.platform_divergence import DivergenceReport
+    from .ports.component_contract_repository import ComponentContractRepository
 
 
 @dataclass(frozen=True)
@@ -81,6 +83,8 @@ class ComponentContractService:
             token_values=command.token_values,
             behaviors=command.behaviors,
         )
+
+        from ..domain.divergence_evaluator import DivergenceEvaluator
 
         evaluator = DivergenceEvaluator(contract)
         report = evaluator.evaluate(platform_state)

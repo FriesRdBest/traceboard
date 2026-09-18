@@ -33,12 +33,14 @@ class ComponentContract:
 
     def add_requirement(self, requirement: ContractRequirement) -> ComponentContract:
         if any(r.id == requirement.id for r in self.requirements):
-            raise ValueError(f"Requirement '{requirement.id}' already exists in contract '{self.id}'")
+            raise ValueError(
+                f"Requirement '{requirement.id}' already exists in contract '{self.id}'"
+            )
 
         return ComponentContract(
             id=self.id,
             component_name=self.component_name,
-            requirements=self.requirements + (requirement,),
+            requirements=(*self.requirements, requirement),
             version=self.version,
             description=self.description,
         )

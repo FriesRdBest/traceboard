@@ -61,7 +61,7 @@ class DivergenceReport:
         return DivergenceReport(
             component_contract_id=self.component_contract_id,
             platform_name=self.platform_name,
-            divergences=self.divergences + (divergence,),
+            divergences=(*self.divergences, divergence),
         )
 
     def summary(self) -> dict[str, int | str]:

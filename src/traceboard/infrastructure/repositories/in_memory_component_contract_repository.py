@@ -1,8 +1,12 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from ...application.ports.component_contract_repository import ComponentContractRepository
-from ...domain.component_contract import ComponentContract
-from ...domain.platform_divergence import DivergenceReport
+
+if TYPE_CHECKING:
+    from ...domain.component_contract import ComponentContract
+    from ...domain.platform_divergence import DivergenceReport
 
 
 class InMemoryComponentContractRepository(ComponentContractRepository):

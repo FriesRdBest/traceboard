@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
 
-from ...domain.component_contract import ComponentContract
-from ...domain.platform_divergence import DivergenceReport
+if TYPE_CHECKING:
+    from ...domain.component_contract import ComponentContract
+    from ...domain.platform_divergence import DivergenceReport
 
 
 class ComponentContractRepository(ABC):
