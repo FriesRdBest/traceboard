@@ -35,6 +35,17 @@ NAV_ITEMS = (
 )
 
 
+DISPLAY_LABELS = {
+    "workspace": "Workspace",
+    "contribution_intake": "Intake",
+    "token_lab": "Tokens",
+    "component_contract": "Contracts",
+    "quality_gate": "Quality",
+    "odyssey": "Story",
+    "release_trace": "Release",
+}
+
+
 def get_active_key(default: str = "workspace") -> str:
     active = st.session_state.get("traceboard_view", default)
     keys = {item.key for item in NAV_ITEMS}
@@ -44,26 +55,34 @@ def get_active_key(default: str = "workspace") -> str:
 def render_navigation() -> str:
     active = get_active_key()
 
-    st.markdown(
-        """
-        <div class="tb-nav-heading">
-            <span>Surfaces</span>
-            <span class="tb-nav-rule"></span>
-            <span class="tb-nav-count">07</span>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    with st.sidebar:
+        st.markdown(
+            """
+            <div class="tb-sidebar-brand">
+              <span class="tb-mark">◈</span>
+              <div>
+                <div class="tb-sidebar-name">TRACEBOARD</div>
+                <div class="tb-sidebar-context">Governance console</div>
+              </div>
+            </div>
+            <div class="tb-sidebar-heading">
+              <span>Governance surfaces</span>
+              <span>07</span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-    columns = st.columns(len(NAV_ITEMS), gap="small")
+        for item in NAV_ITEMS:
+            display_label = DISPLAY_LABELS[item.key]
+            is_active = item.key == active
 
-    for column, item in zip(columns, NAV_ITEMS, strict=False):
-        with column:
             if st.button(
-                item.label,
+                display_label,
                 key=f"nav_{item.key}",
                 use_container_width=True,
-                type="primary" if item.key == active else "secondary",
+                type="primary" if is_active else "secondary",
+                help=f"{item.label}: {item.description}",
             ):
                 st.session_state.traceboard_view = item.key
                 st.rerun()

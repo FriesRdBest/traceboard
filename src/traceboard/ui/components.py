@@ -1,4 +1,4 @@
-"""Native-container UI primitives for Traceboard."""
+"""Shared Traceboard UI components."""
 
 from __future__ import annotations
 
@@ -25,17 +25,26 @@ def badge(label: str, tone: str = "neutral") -> str:
     return f'<span class="tb-badge" data-tone="{esc(tone)}">{esc(label)}</span>'
 
 
+def render_status(label: str, tone: str = "neutral") -> None:
+    markup(badge(label, tone))
+
+
 def render_view_header(item: NavItem) -> None:
     markup(
-        '<div class="tb-view-head">'
+        '<header class="tb-view-head">'
         f'<div class="tb-eyebrow">{esc(item.eyebrow)}</div>'
         f'<h1 class="tb-view-title">{esc(item.label)}</h1>'
         f'<p class="tb-view-description">{esc(item.description)}</p>'
-        "</div>"
+        "</header>"
     )
 
 
-def render_signal(label: str, value: str, detail: str, tone: str = "neutral") -> None:
+def render_signal(
+    label: str,
+    value: str,
+    detail: str,
+    tone: str = "neutral",
+) -> None:
     markup(
         f'<article class="tb-signal" data-tone="{esc(tone)}">'
         f'<div class="tb-label">{esc(label)}</div>'
@@ -62,6 +71,23 @@ def render_panel(
         "</header>"
         f'<div class="tb-panel-body">{body}</div>'
         "</article>"
+    )
+
+
+def render_decision_row(
+    evidence: str,
+    decision: str,
+    contract: str,
+    state: str,
+    tone: str = "neutral",
+) -> str:
+    return (
+        '<div class="tb-decision-row">'
+        f'<div class="tb-decision-evidence">{esc(evidence)}</div>'
+        f'<div class="tb-decision-main">{esc(decision)}</div>'
+        f'<div class="tb-decision-contract">{esc(contract)}</div>'
+        f'<div class="tb-decision-state">{badge(state, tone)}</div>'
+        "</div>"
     )
 
 
@@ -94,19 +120,12 @@ def sources(sources_data: Iterable[Mapping[str, str]]) -> str:
 
 
 def render_theme_toggle() -> None:
-    current = st.session_state.get("traceboard_theme", "dark")
-    label = "Light mode" if current == "dark" else "Dark mode"
-    if st.button(label, key="theme_toggle", type="secondary"):
-        st.session_state.traceboard_theme = "light" if current == "dark" else "dark"
-        st.rerun()
+    """Compatibility hook retained for host integration."""
+    return None
 
 
 def close_panel() -> None:
-    """Compatibility no-op for legacy views.
-
-    New views render complete blocks. This remains available while older
-    surfaces are migrated without breaking the application import graph.
-    """
+    """Compatibility no-op for legacy views."""
     return None
 
 
@@ -116,21 +135,18 @@ def panel(
     *,
     elevation: str = "panel",
 ) -> None:
-    """Compatibility panel opener for legacy views.
+    """Compatibility opener for legacy views.
 
-    Legacy views may still call close_panel(). The visual system now prefers
-    render_panel() with complete content blocks.
+    The legacy API remains available, but page context is intentionally
+    quieter than a data panel.
     """
-    label = "TRACEBOARD"
     description_markup = (
         f'<p class="tb-panel-description">{esc(description)}</p>' if description else ""
     )
     markup(
-        f'<article class="tb-panel" data-tone="{esc(elevation)}">'
-        '<header class="tb-panel-head">'
-        f'<div class="tb-label">{esc(label)}</div>'
-        f'<h2 class="tb-panel-title">{esc(title)}</h2>'
+        f'<section class="tb-legacy-context" data-tone="{esc(elevation)}">'
+        '<div class="tb-label">TRACEBOARD</div>'
+        f'<h1 class="tb-view-title">{esc(title)}</h1>'
         f"{description_markup}"
-        "</header>"
-        '<div class="tb-panel-body">'
+        "</section>"
     )

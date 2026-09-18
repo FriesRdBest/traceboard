@@ -13,7 +13,7 @@ def configure_page() -> None:
         page_title="Traceboard",
         page_icon="◈",
         layout="wide",
-        initial_sidebar_state="collapsed",
+        initial_sidebar_state="expanded",
     )
     st.session_state.traceboard_theme = "dark"
     st.markdown('<div data-theme="dark"></div>', unsafe_allow_html=True)
@@ -24,22 +24,27 @@ def render_shell():
     st.markdown(
         """
         <header class="tb-masthead">
+          <div class="tb-masthead-top">
             <div class="tb-masthead-brand">
-                <span class="tb-mark">◈</span>
-                <span class="tb-kicker">DESIGN-SYSTEM GOVERNANCE</span>
+              <span class="tb-mark">◈</span>
+              <span class="tb-kicker">TRACEBOARD</span>
+              <span class="tb-brand-divider">/</span>
+              <span class="tb-brand-context">DESIGN-SYSTEM GOVERNANCE</span>
             </div>
-            <div class="tb-masthead-row">
-                <div>
-                    <h1 class="tb-app-title">Traceboard</h1>
-                    <p class="tb-app-subtitle">
-                        Evidence, contracts, and releases in one decision field.
-                    </p>
-                </div>
-                <div class="tb-masthead-status">
-                    <span class="tb-status-dot"></span>
-                    <span>CONTROL ROOM</span>
-                </div>
+            <div class="tb-masthead-status">
+              <span class="tb-status-dot"></span>
+              <span>CONTROL ROOM</span>
+              <span class="tb-status-value">92%</span>
             </div>
+          </div>
+          <div class="tb-masthead-row">
+            <div>
+              <h1 class="tb-app-title">Traceboard</h1>
+              <p class="tb-app-subtitle">
+                Evidence, contracts, and releases in one decision field.
+              </p>
+            </div>
+          </div>
         </header>
         """,
         unsafe_allow_html=True,
