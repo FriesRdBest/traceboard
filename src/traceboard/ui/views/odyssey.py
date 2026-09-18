@@ -8,7 +8,7 @@ from traceboard.ui.components import close_panel, panel
 def render() -> None:
     with st.container(border=False):
         panel(
-            "The Odyssey 2026",
+            "System Story",
             "A narrative record of how governance becomes a product capability.",
             elevation="raised",
         )
