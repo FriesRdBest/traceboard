@@ -2,12 +2,20 @@ from __future__ import annotations
 
 import streamlit as st
 
+from traceboard.ui.components import close_panel, panel, table
+from traceboard.ui.views.common import RELEASES
 
-def render_release_trace() -> None:
-    st.header("Release Trace")
-    st.write(
-        "Release history surface for milestones, migration guidance, and operating-plan visibility."
-    )
-    st.caption(
-        "Boundary: UI composition only. Release data is not persisted in this initial shell."
-    )
+
+def render() -> None:
+    with st.container(border=False):
+        panel(
+            "Release trace",
+            "Follow every change from decision to shipped surface.",
+            elevation="raised",
+        )
+        table(("Version", "Scope", "State", "Released"), RELEASES)
+        st.divider()
+        st.caption(
+            "Local demo data is deterministic. Persistence is intentionally deferred until the integration contract is approved."
+        )
+        close_panel()
