@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
-import argparse
 import json
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import argparse
 
 from ..domain.system_map import ComponentNode, SystemMap, TokenDependency
 

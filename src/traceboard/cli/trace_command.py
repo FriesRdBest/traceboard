@@ -2,12 +2,16 @@
 
 from __future__ import annotations
 
-import argparse
 import json
+from typing import TYPE_CHECKING
 
-from ..application.ports.token_scanner import TokenScanner
 from ..application.trace_service import ScanDirectoryCommand, TraceService
 from ..infrastructure.scanners.json_token_scanner import JsonTokenScanner
+
+if TYPE_CHECKING:
+    import argparse
+
+    from ..application.ports.token_scanner import TokenScanner
 
 
 def trace_command(args: argparse.Namespace) -> int:
