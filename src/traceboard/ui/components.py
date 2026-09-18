@@ -3,16 +3,21 @@
 from __future__ import annotations
 
 import html
-from typing import Iterable, Mapping
+from typing import TYPE_CHECKING
 
 import streamlit as st
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable, Mapping
+
+    from traceboard.ui.navigation import NavItem
 
 
 def _esc(value: object) -> str:
     return html.escape(str(value))
 
 
-def panel(title: str, description: str | None = None, *, elevation: str = "panel"):
+def panel(title: str, description: str | None = None, *, elevation: str = "panel") -> None:
     st.markdown(
         f'<section class="traceboard-panel" data-elevation="{_esc(elevation)}">'
         '<div class="traceboard-panel__header">'
@@ -45,8 +50,13 @@ def stat(label: str, value: str, detail: str = "") -> None:
 
 def table(headers: Iterable[str], rows: Iterable[Iterable[str]]) -> None:
     head = "".join(f"<th>{_esc(item)}</th>" for item in headers)
-    body = "".join("<tr>" + "".join(f"<td>{_esc(cell)}</td>" for cell in row) + "</tr>" for row in rows)
-    st.markdown(f'<div style="overflow-x:auto"><table class="traceboard-table"><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table></div>', unsafe_allow_html=True)
+    body = "".join(
+        "<tr>" + "".join(f"<td>{_esc(cell)}</td>" for cell in row) + "</tr>" for row in rows
+    )
+    st.markdown(
+        f'<div style="overflow-x:auto"><table class="traceboard-table"><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table></div>',
+        unsafe_allow_html=True,
+    )
 
 
 def citation_card(source: Mapping[str, str]) -> None:
@@ -60,7 +70,7 @@ def citation_card(source: Mapping[str, str]) -> None:
     )
 
 
-def view_header(item) -> None:
+def view_header(item: NavItem) -> None:
     st.markdown(
         '<header class="traceboard-header">'
         '<div>'
