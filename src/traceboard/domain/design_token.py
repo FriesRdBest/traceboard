@@ -1,10 +1,13 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
-from typing import Dict
+from typing import TYPE_CHECKING
 
-from traceboard.domain.token_value import TokenValue
+if TYPE_CHECKING:
+    from traceboard.domain.token_value import TokenValue
 
 
-def _empty_str_dict() -> Dict[str, str]:
+def _empty_str_dict() -> dict[str, str]:
     return {}
 
 
@@ -15,7 +18,7 @@ class DesignToken:
     name: str
     value: TokenValue
     aliases: tuple[str, ...] = field(default_factory=tuple)
-    metadata: Dict[str, str] = field(default_factory=_empty_str_dict)
+    metadata: dict[str, str] = field(default_factory=_empty_str_dict)
 
     def __post_init__(self) -> None:
         if not self.name:
