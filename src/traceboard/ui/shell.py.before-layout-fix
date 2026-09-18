@@ -1,0 +1,41 @@
+"""Native Streamlit application shell."""
+
+from __future__ import annotations
+
+import streamlit as st
+
+from traceboard.ui.components import render_theme_toggle
+from traceboard.ui.design_system import get_css
+from traceboard.ui.navigation import NAV_ITEMS, render_navigation
+
+
+def configure_page() -> None:
+    st.set_page_config(
+        page_title="Traceboard",
+        page_icon="◈",
+        layout="wide",
+        initial_sidebar_state="collapsed",
+    )
+    theme = st.session_state.get("traceboard_theme", "dark")
+    st.markdown(f'<div data-theme="{theme}"></div>', unsafe_allow_html=True)
+    st.markdown(f"<style>{get_css()}</style>", unsafe_allow_html=True)
+
+
+def render_shell():
+    header_left, header_right = st.columns([5, 1], gap="medium", vertical_alignment="bottom")
+    with header_left:
+        st.markdown(
+            '<div class="tb-brandline">'
+            '<span class="tb-mark">◈</span>'
+            '<span class="tb-label">DESIGN-SYSTEM GOVERNANCE</span>'
+            "</div>"
+            '<div class="tb-app-title">Traceboard</div>'
+            '<div class="tb-app-subtitle">A decision field for evidence, contracts, and releases.</div>',
+            unsafe_allow_html=True,
+        )
+    with header_right:
+        render_theme_toggle()
+
+    active = render_navigation()
+
+    return next(item for item in NAV_ITEMS if item.key == active)

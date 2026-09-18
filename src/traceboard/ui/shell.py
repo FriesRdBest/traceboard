@@ -1,4 +1,4 @@
-"""Global Traceboard shell."""
+"""Traceboard application shell."""
 
 from __future__ import annotations
 
@@ -10,19 +10,46 @@ from traceboard.ui.navigation import NAV_ITEMS, render_navigation
 
 def configure_page() -> None:
     st.set_page_config(
-        page_title="Traceboard", page_icon="◈", layout="wide", initial_sidebar_state="collapsed"
+        page_title="Traceboard",
+        page_icon="◈",
+        layout="wide",
+        initial_sidebar_state="expanded",
     )
+    st.session_state.traceboard_theme = "dark"
+    st.markdown('<div data-theme="dark"></div>', unsafe_allow_html=True)
     st.markdown(f"<style>{get_css()}</style>", unsafe_allow_html=True)
 
 
 def render_shell():
     st.markdown(
-        '<main class="traceboard-shell"><div class="traceboard-workspace">', unsafe_allow_html=True
-    )
-    st.markdown(
-        '<header class="traceboard-header"><div><div class="traceboard-kicker">DESIGN-SYSTEM GOVERNANCE</div><div class="traceboard-title">Traceboard</div><p class="traceboard-subtitle">A live control room for making, reviewing, and releasing design-system decisions under pressure.</p></div></header>',
+        """
+        <header class="tb-masthead">
+          <div class="tb-masthead-top">
+            <div class="tb-masthead-brand">
+              <span class="tb-mark">◈</span>
+              <span class="tb-kicker">TRACEBOARD</span>
+              <span class="tb-brand-divider">/</span>
+              <span class="tb-brand-context">DESIGN-SYSTEM GOVERNANCE</span>
+            </div>
+            <div class="tb-masthead-status">
+              <span class="tb-status-dot"></span>
+              <span>CONTROL ROOM</span>
+              <span class="tb-status-value">92%</span>
+            </div>
+          </div>
+          <div class="tb-masthead-row">
+            <div>
+              <h1 class="tb-app-title">Traceboard</h1>
+              <p class="tb-app-subtitle">
+                Evidence, contracts, and releases in one decision field.
+              </p>
+            </div>
+          </div>
+        </header>
+        """,
         unsafe_allow_html=True,
     )
+
     active = render_navigation()
-    st.markdown("</div></main>", unsafe_allow_html=True)
+
     return next(item for item in NAV_ITEMS if item.key == active)

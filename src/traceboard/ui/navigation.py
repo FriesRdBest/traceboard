@@ -1,8 +1,10 @@
-"""Navigation model for Traceboard's seven workflow surfaces."""
+"""Traceboard application navigation."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+
+import streamlit as st
 
 
 @dataclass(frozen=True)
@@ -14,56 +16,75 @@ class NavItem:
 
 
 NAV_ITEMS = (
+    NavItem("workspace", "Workspace", "CONTROL ROOM", "System posture and active decisions."),
     NavItem(
-        "workspace", "Workspace", "CONTROL ROOM", "System-wide governance posture and active work."
+        "contribution_intake", "Contribution Intake", "INTAKE", "Open a new door with evidence."
     ),
-    NavItem(
-        "contribution_intake",
-        "Contribution Intake",
-        "INTAKE",
-        "Capture a proposed contribution with its evidence.",
-    ),
-    NavItem("token_lab", "Token Lab", "TOKENS", "Inspect the shared decision primitives."),
+    NavItem("token_lab", "Token Lab", "TOKENS", "Inspect the primitives behind decisions."),
     NavItem(
         "component_contract",
         "Component Contract",
         "CONTRACT",
-        "Define behavior, anatomy, and required states.",
+        "Define behavior before implementation.",
     ),
+    NavItem("quality_gate", "Quality Gate", "QUALITY", "Make readiness and blockers explicit."),
     NavItem(
-        "quality_gate",
-        "Quality Gate",
-        "QUALITY",
-        "Review implementation readiness and blocking conditions.",
+        "odyssey", "The Odyssey 2026", "SYSTEM STORY", "Follow the ideas that changed the system."
     ),
-    NavItem("odyssey", "The Odyssey 2026", "NARRATIVE", "Trace the design-system operating story."),
-    NavItem(
-        "release_trace", "Release Trace", "RELEASE", "Follow changes from decision through release."
-    ),
+    NavItem("release_trace", "Release Trace", "RELEASE", "Connect decisions to shipped surfaces."),
 )
 
 
-def get_active_key(default: str = "workspace") -> str:
-    import streamlit as st
+DISPLAY_LABELS = {
+    "workspace": "Workspace",
+    "contribution_intake": "Intake",
+    "token_lab": "Tokens",
+    "component_contract": "Contracts",
+    "quality_gate": "Quality",
+    "odyssey": "Story",
+    "release_trace": "Release",
+}
 
-    current = st.session_state.get("traceboard_view", default)
+
+def get_active_key(default: str = "workspace") -> str:
+    active = st.session_state.get("traceboard_view", default)
     keys = {item.key for item in NAV_ITEMS}
-    return current if current in keys else default
+    return active if active in keys else default
 
 
 def render_navigation() -> str:
-    import streamlit as st
-
     active = get_active_key()
-    cols = st.columns(len(NAV_ITEMS), gap="small")
-    for col, item in zip(cols, NAV_ITEMS, strict=False):
-        with col:
+
+    with st.sidebar:
+        st.markdown(
+            """
+            <div class="tb-sidebar-brand">
+              <span class="tb-mark">◈</span>
+              <div>
+                <div class="tb-sidebar-name">TRACEBOARD</div>
+                <div class="tb-sidebar-context">Governance console</div>
+              </div>
+            </div>
+            <div class="tb-sidebar-heading">
+              <span>Governance surfaces</span>
+              <span>07</span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        for item in NAV_ITEMS:
+            display_label = DISPLAY_LABELS[item.key]
+            is_active = item.key == active
+
             if st.button(
-                item.label,
+                display_label,
                 key=f"nav_{item.key}",
                 use_container_width=True,
-                type="primary" if item.key == active else "secondary",
+                type="primary" if is_active else "secondary",
+                help=f"{item.label}: {item.description}",
             ):
                 st.session_state.traceboard_view = item.key
                 st.rerun()
+
     return active
