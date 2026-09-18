@@ -1,4 +1,4 @@
-"""Native Streamlit navigation for Traceboard."""
+"""Traceboard application navigation."""
 
 from __future__ import annotations
 
@@ -44,19 +44,28 @@ def get_active_key(default: str = "workspace") -> str:
 def render_navigation() -> str:
     active = get_active_key()
 
-    nav = st.container()
-    with nav:
-        columns = st.columns(len(NAV_ITEMS), gap="small")
-        for column, item in zip(columns[:-1], NAV_ITEMS, strict=False):
-            with column:
-                selected = item.key == active
-                if st.button(
-                    item.label,
-                    key=f"nav_{item.key}",
-                    use_container_width=True,
-                    type="primary" if selected else "secondary",
-                ):
-                    st.session_state.traceboard_view = item.key
-                    st.rerun()
+    st.markdown(
+        """
+        <div class="tb-nav-heading">
+            <span>Surfaces</span>
+            <span class="tb-nav-rule"></span>
+            <span class="tb-nav-count">07</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    columns = st.columns(len(NAV_ITEMS), gap="small")
+
+    for column, item in zip(columns, NAV_ITEMS, strict=False):
+        with column:
+            if st.button(
+                item.label,
+                key=f"nav_{item.key}",
+                use_container_width=True,
+                type="primary" if item.key == active else "secondary",
+            ):
+                st.session_state.traceboard_view = item.key
+                st.rerun()
 
     return active

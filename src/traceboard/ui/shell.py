@@ -1,4 +1,4 @@
-"""Native Streamlit application shell."""
+"""Traceboard application shell."""
 
 from __future__ import annotations
 
@@ -15,28 +15,36 @@ def configure_page() -> None:
         layout="wide",
         initial_sidebar_state="collapsed",
     )
-    theme = st.session_state.get("traceboard_theme", "dark")
-    st.markdown(f'<div data-theme="{theme}"></div>', unsafe_allow_html=True)
+    st.session_state.traceboard_theme = "dark"
+    st.markdown('<div data-theme="dark"></div>', unsafe_allow_html=True)
     st.markdown(f"<style>{get_css()}</style>", unsafe_allow_html=True)
 
 
 def render_shell():
     st.markdown(
-        '<header class="tb-app-header">'
-        '<div class="tb-brandline">'
-        '<span class="tb-mark">◈</span>'
-        '<span class="tb-label">DESIGN-SYSTEM GOVERNANCE</span>'
-        "</div>"
-        '<div class="tb-app-title">Traceboard</div>'
-        '<div class="tb-app-subtitle">'
-        "A decision field for evidence, contracts, and releases."
-        "</div>"
-        "</header>",
+        """
+        <header class="tb-masthead">
+            <div class="tb-masthead-brand">
+                <span class="tb-mark">◈</span>
+                <span class="tb-kicker">DESIGN-SYSTEM GOVERNANCE</span>
+            </div>
+            <div class="tb-masthead-row">
+                <div>
+                    <h1 class="tb-app-title">Traceboard</h1>
+                    <p class="tb-app-subtitle">
+                        Evidence, contracts, and releases in one decision field.
+                    </p>
+                </div>
+                <div class="tb-masthead-status">
+                    <span class="tb-status-dot"></span>
+                    <span>CONTROL ROOM</span>
+                </div>
+            </div>
+        </header>
+        """,
         unsafe_allow_html=True,
     )
 
-    st.markdown('<div class="tb-nav-shell">', unsafe_allow_html=True)
     active = render_navigation()
-    st.markdown("</div>", unsafe_allow_html=True)
 
     return next(item for item in NAV_ITEMS if item.key == active)
