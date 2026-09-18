@@ -14,13 +14,32 @@ class NavItem:
 
 
 NAV_ITEMS = (
-    NavItem("workspace", "Workspace", "CONTROL ROOM", "System-wide governance posture and active work."),
-    NavItem("contribution_intake", "Contribution Intake", "INTAKE", "Capture a proposed contribution with its evidence."),
+    NavItem(
+        "workspace", "Workspace", "CONTROL ROOM", "System-wide governance posture and active work."
+    ),
+    NavItem(
+        "contribution_intake",
+        "Contribution Intake",
+        "INTAKE",
+        "Capture a proposed contribution with its evidence.",
+    ),
     NavItem("token_lab", "Token Lab", "TOKENS", "Inspect the shared decision primitives."),
-    NavItem("component_contract", "Component Contract", "CONTRACT", "Define behavior, anatomy, and required states."),
-    NavItem("quality_gate", "Quality Gate", "QUALITY", "Review implementation readiness and blocking conditions."),
+    NavItem(
+        "component_contract",
+        "Component Contract",
+        "CONTRACT",
+        "Define behavior, anatomy, and required states.",
+    ),
+    NavItem(
+        "quality_gate",
+        "Quality Gate",
+        "QUALITY",
+        "Review implementation readiness and blocking conditions.",
+    ),
     NavItem("odyssey", "The Odyssey 2026", "NARRATIVE", "Trace the design-system operating story."),
-    NavItem("release_trace", "Release Trace", "RELEASE", "Follow changes from decision through release."),
+    NavItem(
+        "release_trace", "Release Trace", "RELEASE", "Follow changes from decision through release."
+    ),
 )
 
 
@@ -37,7 +56,7 @@ def render_navigation() -> str:
 
     active = get_active_key()
     cols = st.columns(len(NAV_ITEMS), gap="small")
-    for col, item in zip(cols, NAV_ITEMS):
+    for col, item in zip(cols, NAV_ITEMS, strict=False):
         with col:
             if st.button(
                 item.label,

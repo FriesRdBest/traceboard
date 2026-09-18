@@ -8,8 +8,14 @@ from traceboard.ui.views.common import RELEASES
 
 def render() -> None:
     with st.container(border=False):
-        panel("Release trace", "Follow every change from decision to shipped surface.", elevation="raised")
+        panel(
+            "Release trace",
+            "Follow every change from decision to shipped surface.",
+            elevation="raised",
+        )
         table(("Version", "Scope", "State", "Released"), RELEASES)
         st.divider()
-        st.caption("Local demo data is deterministic. Persistence is intentionally deferred until the integration contract is approved.")
+        st.caption(
+            "Local demo data is deterministic. Persistence is intentionally deferred until the integration contract is approved."
+        )
         close_panel()

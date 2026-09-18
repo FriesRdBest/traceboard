@@ -5,8 +5,18 @@ from __future__ import annotations
 from datetime import date
 
 SOURCES = [
-    {"type": "PRIMARY", "status": "VERIFIED", "title": "Perplexity Design System", "excerpt": "Canonical guidance for interface structure, typography, and product behavior."},
-    {"type": "RECORD", "status": "REVIEWED", "title": "Traceboard decision log", "excerpt": "The current governance record for token and component changes."},
+    {
+        "type": "PRIMARY",
+        "status": "VERIFIED",
+        "title": "Perplexity Design System",
+        "excerpt": "Canonical guidance for interface structure, typography, and product behavior.",
+    },
+    {
+        "type": "RECORD",
+        "status": "REVIEWED",
+        "title": "Traceboard decision log",
+        "excerpt": "The current governance record for token and component changes.",
+    },
 ]
 
 RELEASES = [

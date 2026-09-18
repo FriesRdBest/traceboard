@@ -1,6 +1,14 @@
 from __future__ import annotations
 
-from traceboard.ui.views import component_contract, contribution_intake, odyssey, quality_gate, release_trace, token_lab, workspace
+from traceboard.ui.views import (
+    component_contract,
+    contribution_intake,
+    odyssey,
+    quality_gate,
+    release_trace,
+    token_lab,
+    workspace,
+)
 
 VIEWS = {
     "workspace": workspace.render,

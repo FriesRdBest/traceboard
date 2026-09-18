@@ -23,7 +23,11 @@ def panel(title: str, description: str | None = None, *, elevation: str = "panel
         '<div class="traceboard-panel__header">'
         '<div><h2 class="traceboard-panel__title">'
         f"{_esc(title)}</h2>"
-        + (f'<p class="traceboard-panel__description">{_esc(description)}</p>' if description else "")
+        + (
+            f'<p class="traceboard-panel__description">{_esc(description)}</p>'
+            if description
+            else ""
+        )
         + "</div></div>",
         unsafe_allow_html=True,
     )
@@ -73,7 +77,7 @@ def citation_card(source: Mapping[str, str]) -> None:
 def view_header(item: NavItem) -> None:
     st.markdown(
         '<header class="traceboard-header">'
-        '<div>'
+        "<div>"
         f'<div class="traceboard-kicker">{_esc(item.eyebrow)}</div>'
         f'<h1 class="traceboard-title">{_esc(item.label)}</h1>'
         f'<p class="traceboard-subtitle">{_esc(item.description)}</p>'

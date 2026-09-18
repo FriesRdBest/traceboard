@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-
-CSS_TOKENS = r'''
+CSS_TOKENS = r"""
 :root {
   --canvas-bg: #0a2528;
   --canvas-bg-raised: #0d2d30;
@@ -104,7 +103,7 @@ html, body, [data-testid="stAppViewContainer"] { background: var(--canvas-bg); c
 @media (max-width:900px) { .traceboard-header { align-items:flex-start; flex-direction:column; } .traceboard-grid--3 { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media (max-width:640px) { .block-container { padding-inline:16px; } .traceboard-grid--2, .traceboard-grid--3 { grid-template-columns:1fr; } .traceboard-panel { padding:16px; } }
 @media (prefers-reduced-motion:reduce) { *, *::before, *::after { scroll-behavior:auto !important; transition-duration:.01ms !important; animation-duration:.01ms !important; } }
-'''
+"""
 
 
 def get_css() -> str:
