@@ -68,7 +68,7 @@ def test_token_trace_add_usage_wrong_token() -> None:
 
     try:
         trace.add_usage(usage)
-        assert False, "Should have raised ValueError"
+        raise AssertionError("Should have raised ValueError")
     except ValueError as e:
         assert "Cannot add usage for token" in str(e)
 

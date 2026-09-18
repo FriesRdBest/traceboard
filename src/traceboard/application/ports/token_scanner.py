@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from ...domain.token_trace import TokenTrace, TraceReport
 
 
@@ -16,8 +18,6 @@ class TokenScanner(ABC):
         pass
 
     @abstractmethod
-    def scan_files(
-        self, file_paths: list[str], read_file: Callable[[str], str]
-    ) -> TraceReport:
+    def scan_files(self, file_paths: list[str], read_file: Callable[[str], str]) -> TraceReport:
         """Scan multiple files and return a complete trace report."""
         pass

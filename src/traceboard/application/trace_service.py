@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from ..domain.token_trace import TokenTrace, TraceReport
+from ..domain.token_trace import TokenTrace, TokenUsage, TraceReport
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -62,11 +62,10 @@ class TraceService:
                         all_traces[trace.token_name].extend(trace.usages)
                     all_errors.extend(report.scan_errors)
                 except Exception as e:
-                    all_errors.append(f"Scanner error: {str(e)}")
+                    all_errors.append(f"Scanner error: {e!s}")
 
         token_traces = tuple(
-            TokenTrace(token_name=name, usages=tuple(usages))
-            for name, usages in all_traces.items()
+            TokenTrace(token_name=name, usages=tuple(usages)) for name, usages in all_traces.items()
         )
 
         return TraceReport(
@@ -86,7 +85,3 @@ class TraceService:
     def list_high_usage_tokens(self, report: TraceReport) -> Sequence[TokenTrace]:
         """List tokens used more than 10 times."""
         return report.high_usage_tokens
-
-
-# Import at end to avoid circular dependency
-from ..domain.token_trace import TokenUsage  # noqa: E402

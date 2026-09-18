@@ -56,11 +56,11 @@ class TokenTrace:
 
     @property
     def file_count(self) -> int:
-        return len(set(u.file_path for u in self.usages))
+        return len({u.file_path for u in self.usages})
 
     @property
     def languages(self) -> tuple[FileLanguage, ...]:
-        return tuple(sorted(set(u.language for u in self.usages), key=lambda x: x.name))
+        return tuple(sorted({u.language for u in self.usages}, key=lambda x: x.name))
 
     def add_usage(self, usage: TokenUsage) -> TokenTrace:
         if usage.token_name != self.token_name:
@@ -78,7 +78,7 @@ class TokenTrace:
             "usage_count": self.usage_count,
             "file_count": self.file_count,
             "languages": [lang.name for lang in self.languages],
-            "files": sorted(set(u.file_path for u in self.usages)),
+            "files": sorted({u.file_path for u in self.usages}),
         }
 
 

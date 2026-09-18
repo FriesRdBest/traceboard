@@ -4,6 +4,7 @@ import json
 import re
 from typing import TYPE_CHECKING, Any
 
+from ...application.ports.token_scanner import TokenScanner
 from ...domain.token_trace import (
     FileLanguage,
     TokenTrace,
@@ -11,7 +12,6 @@ from ...domain.token_trace import (
     TraceReport,
     UsageType,
 )
-from ...application.ports.token_scanner import TokenScanner
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -35,8 +35,7 @@ class JsonTokenScanner(TokenScanner):
             pass
 
         return tuple(
-            TokenTrace(token_name=name, usages=tuple(usages))
-            for name, usages in traces.items()
+            TokenTrace(token_name=name, usages=tuple(usages)) for name, usages in traces.items()
         )
 
     def _scan_value(
@@ -91,9 +90,7 @@ class JsonTokenScanner(TokenScanner):
                 traces[token_name] = []
             traces[token_name].append(usage)
 
-    def scan_files(
-        self, file_paths: list[str], read_file: Callable[[str], str]
-    ) -> TraceReport:
+    def scan_files(self, file_paths: list[str], read_file: Callable[[str], str]) -> TraceReport:
         all_traces: dict[str, list[TokenUsage]] = {}
         errors: list[str] = []
         scanned: list[str] = []
@@ -110,11 +107,10 @@ class JsonTokenScanner(TokenScanner):
                     all_traces[trace.token_name].extend(trace.usages)
 
             except Exception as e:
-                errors.append(f"{file_path}: {str(e)}")
+                errors.append(f"{file_path}: {e!s}")
 
         token_traces = tuple(
-            TokenTrace(token_name=name, usages=tuple(usages))
-            for name, usages in all_traces.items()
+            TokenTrace(token_name=name, usages=tuple(usages)) for name, usages in all_traces.items()
         )
 
         return TraceReport(

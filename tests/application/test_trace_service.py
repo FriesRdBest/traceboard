@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from pathlib import Path
 from traceboard.application.trace_service import ScanDirectoryCommand, TraceService
 from traceboard.infrastructure.scanners.json_token_scanner import JsonTokenScanner
 
@@ -28,7 +27,7 @@ def test_trace_service_scan_nonexistent_directory() -> None:
 
     try:
         service.scan_directory(cmd)
-        assert False, "Should have raised ValueError"
+        raise AssertionError("Should have raised ValueError")
     except ValueError as e:
         assert "does not exist" in str(e)
 
@@ -71,7 +70,13 @@ def test_trace_service_list_unused_tokens() -> None:
 
 
 def test_trace_service_list_high_usage_tokens() -> None:
-    from traceboard.domain.token_trace import TokenTrace, TokenUsage, TraceReport, UsageType, FileLanguage
+    from traceboard.domain.token_trace import (
+        FileLanguage,
+        TokenTrace,
+        TokenUsage,
+        TraceReport,
+        UsageType,
+    )
 
     scanners = [JsonTokenScanner()]
     service = TraceService(scanners)
