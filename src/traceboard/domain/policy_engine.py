@@ -1,11 +1,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-from .component_contract import ComponentContract
 from .contrast_evaluator import ContrastEvaluator
-from .divergence_evaluator import PlatformState
-from .platform_divergence import DivergenceReport
 from .quality_gate import (
     GateEvaluationResult,
     GateResultStatus,
@@ -14,7 +12,12 @@ from .quality_gate import (
     QualityGateRule,
     RuleType,
 )
-from .token_value import TokenValue
+
+if TYPE_CHECKING:
+    from .component_contract import ComponentContract
+    from .divergence_evaluator import PlatformState
+    from .platform_divergence import DivergenceReport
+    from .token_value import TokenValue
 
 
 @dataclass(frozen=True)
@@ -24,7 +27,7 @@ class PolicyContext:
     component_contract: ComponentContract | None
     divergence_report: DivergenceReport | None
     platform_state: PlatformState | None
-    foreground: TokenValue | None  # For contrast checks
+    foreground: TokenValue | None
     background: TokenValue | None
 
 
@@ -130,7 +133,7 @@ class PolicyEngine:
                 message="Foreground or background token not available",
             )
 
-        threshold = rule.threshold or 4.5  # WCAG AA normal text default
+        threshold = rule.threshold or 4.5
 
         result = ContrastEvaluator.evaluate(
             context.foreground.raw,

@@ -4,17 +4,17 @@ from dataclasses import dataclass, field
 from enum import Enum, auto
 
 
-class GateResultStatus(Enum):
-    PASS = auto()
-    FAIL = auto()
-    SKIP = auto()
-
-
 class RuleType(Enum):
     NO_BLOCKER_DIVERGENCES = auto()
     NO_MAJOR_DIVERGENCES = auto()
     MIN_CONTRAST_RATIO = auto()
     CUSTOM = auto()
+
+
+class GateResultStatus(Enum):
+    PASS = auto()
+    FAIL = auto()
+    SKIP = auto()
 
 
 @dataclass(frozen=True)
@@ -23,26 +23,14 @@ class QualityGateRule:
 
     id: str
     rule_type: RuleType
-    description: str
-    threshold: float | None = None  # e.g., min contrast ratio
-    component_contract_id: str | None = None
-    platform_name: str | None = None
-
-
-@dataclass(frozen=True)
-class QualityGateResult:
-    """Outcome of evaluating a single rule."""
-
-    rule_id: str
-    status: GateResultStatus
-    message: str
-    actual_value: float | int | str | None = None
-    expected_value: float | int | str | None = None
+    threshold: float | None = None
+    description: str | None = None
+    metadata: dict[str, str] = field(default_factory=lambda: {})
 
 
 @dataclass(frozen=True)
 class QualityGate:
-    """Quality gate defining pass/fail criteria."""
+    """Quality gate defining rules for token/design quality."""
 
     id: str
     name: str
@@ -56,7 +44,7 @@ class QualityGate:
         return QualityGate(
             id=self.id,
             name=self.name,
-            rules=self.rules + (rule,),
+            rules=(*self.rules, rule),
             description=self.description,
         )
 
@@ -68,8 +56,19 @@ class QualityGate:
 
 
 @dataclass(frozen=True)
+class QualityGateResult:
+    """Result of evaluating a single quality gate rule."""
+
+    rule_id: str
+    status: GateResultStatus
+    message: str | None = None
+    actual_value: float | int | None = None
+    expected_value: float | int | None = None
+
+
+@dataclass(frozen=True)
 class GateEvaluationResult:
-    """Aggregate result of evaluating all rules in a gate."""
+    """Result of evaluating a quality gate."""
 
     gate_id: str
     gate_name: str
@@ -88,7 +87,10 @@ class GateEvaluationResult:
         return {
             "gate_id": self.gate_id,
             "gate_name": self.gate_name,
+            "overall_status": self.overall_status.name,
             "passed": self.passed,
             "total_rules": len(self.rule_results),
+            "passed_count": sum(1 for r in self.rule_results if r.status == GateResultStatus.PASS),
             "failed_rules": self.failed_rule_count,
+            "skipped_count": sum(1 for r in self.rule_results if r.status == GateResultStatus.SKIP),
         }

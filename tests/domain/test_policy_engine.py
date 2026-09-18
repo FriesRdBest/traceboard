@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from traceboard.domain.component_contract import ComponentContract
 from traceboard.domain.platform_divergence import (
     DivergenceReport,
     DivergenceSeverity,

@@ -75,8 +75,6 @@ class QualityGateService:
             rule_type=command.rule_type,
             description=command.description,
             threshold=command.threshold,
-            component_contract_id=command.component_contract_id,
-            platform_name=command.platform_name,
         )
 
         updated = gate.add_rule(rule)
@@ -106,5 +104,7 @@ class QualityGateService:
     def list_gates(self) -> Sequence[QualityGate]:
         return self.repository.get_all()
 
-    def get_evaluation_result(self, gate_id: str) -> GateEvaluationResult | None:
-        return self.repository.get_evaluation_result(gate_id)
+    def get_evaluation_result(
+        self, gate_id: str, context_id: str = "default"
+    ) -> GateEvaluationResult | None:
+        return self.repository.get_evaluation_result(gate_id, context_id)

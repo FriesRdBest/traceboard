@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
 
-from ...domain.quality_gate import GateEvaluationResult, QualityGate
+if TYPE_CHECKING:
+    from ...domain.quality_gate import GateEvaluationResult, QualityGate
 
 
 class QualityGateRepository(ABC):
-    """Repository port for QualityGate aggregates and results."""
+    """Repository port for QualityGate aggregates."""
 
     @abstractmethod
     def add(self, gate: QualityGate) -> None:
@@ -29,6 +31,6 @@ class QualityGateRepository(ABC):
         pass
 
     @abstractmethod
-    def get_evaluation_result(self, gate_id: str) -> GateEvaluationResult | None:
-        """Get the latest evaluation result for a gate."""
+    def get_evaluation_result(self, gate_id: str, context_id: str) -> GateEvaluationResult | None:
+        """Get an evaluation result for a gate and context."""
         pass
