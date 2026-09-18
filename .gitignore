@@ -1,3 +1,6 @@
+# Codespaces configuration (explicitly tracked)
+!.devcontainer/**
+
 # Bytecode / cache
 __pycache__/
 *.py[cod]
