@@ -47,7 +47,7 @@ def render_navigation() -> str:
     nav = st.container()
     with nav:
         columns = st.columns(len(NAV_ITEMS), gap="small")
-        for column, item in zip(columns[:-1], NAV_ITEMS, strict=False):
+        for column, item in zip(columns, NAV_ITEMS, strict=False):
             with column:
                 selected = item.key == active
                 if st.button(

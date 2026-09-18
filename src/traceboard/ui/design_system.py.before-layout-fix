@@ -45,35 +45,6 @@ CSS_TOKENS = r"""
   --st-gap: 0px;
 }
 
-.tb-app-header {
-  position: relative;
-  z-index: 1;
-  margin: 0 0 28px;
-}
-
-.tb-app-subtitle {
-  display: block;
-  margin: 14px 0 0;
-  max-width: 720px;
-  color: var(--tb-text-2);
-  font: 400 17px/1.48 var(--tb-editorial);
-}
-
-.tb-nav-shell {
-  position: relative;
-  z-index: 2;
-  clear: both;
-  margin: 0 0 18px;
-  padding-top: 0;
-}
-
-.tb-nav-shell [data-testid="stHorizontalBlock"] {
-  align-items: stretch;
-}
-
-
-}
-
 [data-theme="light"] {
   color-scheme: light;
 
