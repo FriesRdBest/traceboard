@@ -1,11 +1,12 @@
 """Main CLI entry point."""
+
 from __future__ import annotations
 
 import argparse
 import sys
 
-from .trace_command import trace_command
 from .map_command import map_command
+from .trace_command import trace_command
 
 
 def main() -> int:

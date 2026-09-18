@@ -1,10 +1,11 @@
 """CLI command for generating system map."""
+
 from __future__ import annotations
 
 import argparse
 import json
 
-from ..domain.system_map import SystemMap, TokenDependency, ComponentNode
+from ..domain.system_map import ComponentNode, SystemMap, TokenDependency
 
 
 def map_command(args: argparse.Namespace) -> int:
@@ -39,24 +40,24 @@ def map_command(args: argparse.Namespace) -> int:
     elif args.json:
         print(json.dumps(system_map.summary(), indent=2))
     else:
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print("SYSTEM MAP")
-        print(f"{'='*60}\n")
+        print(f"{'=' * 60}\n")
         print(f"Tokens: {system_map.token_count}")
         print(f"Dependencies: {system_map.dependency_count}")
         print(f"Components: {system_map.component_count}")
 
         if system_map.token_dependencies:
-            print(f"\n{'='*60}")
+            print(f"\n{'=' * 60}")
             print("TOKEN DEPENDENCIES")
-            print(f"{'='*60}")
+            print(f"{'=' * 60}")
             for dep in system_map.token_dependencies:
                 print(f"  {dep.source_token} --[{dep.dependency_type}]--> {dep.target_token}")
 
         if system_map.component_nodes:
-            print(f"\n{'='*60}")
+            print(f"\n{'=' * 60}")
             print("COMPONENTS")
-            print(f"{'='*60}")
+            print(f"{'=' * 60}")
             for comp in system_map.component_nodes:
                 print(f"  {comp.component_name} ({comp.contract_id})")
                 for token in comp.token_names:

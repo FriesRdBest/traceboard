@@ -67,7 +67,8 @@ class SystemMap:
 
     def get_token_dependencies(self, token_name: str) -> tuple[TokenDependency, ...]:
         return tuple(
-            dep for dep in self.token_dependencies
+            dep
+            for dep in self.token_dependencies
             if dep.source_token == token_name or dep.target_token == token_name
         )
 

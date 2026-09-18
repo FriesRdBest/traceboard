@@ -1,4 +1,5 @@
 """CLI command for running token traces."""
+
 from __future__ import annotations
 
 import argparse
@@ -29,9 +30,9 @@ def trace_command(args: argparse.Namespace) -> int:
     if args.json:
         print(json.dumps(report.summary(), indent=2))
     else:
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print("TOKEN TRACE REPORT")
-        print(f"{'='*60}\n")
+        print(f"{'=' * 60}\n")
         print(f"Scanned files: {len(report.scanned_files)}")
         print(f"Total tokens: {report.total_tokens}")
         print(f"Total usages: {report.total_usages}")
@@ -39,25 +40,25 @@ def trace_command(args: argparse.Namespace) -> int:
         print(f"High usage tokens: {len(report.high_usage_tokens)}")
 
         if report.unused_tokens:
-            print(f"\n{'='*60}")
+            print(f"\n{'=' * 60}")
             print("UNUSED TOKENS")
-            print(f"{'='*60}")
+            print(f"{'=' * 60}")
             for trace in report.unused_tokens:
                 print(f"  - {trace.token_name}")
 
         if args.verbose and report.token_traces:
-            print(f"\n{'='*60}")
+            print(f"\n{'=' * 60}")
             print("TOKEN DETAILS")
-            print(f"{'='*60}")
+            print(f"{'=' * 60}")
             for trace in report.token_traces[:10]:
                 print(f"\n{trace.token_name}:")
                 print(f"  Usage count: {trace.usage_count}")
                 print(f"  Files: {trace.file_count}")
 
     if report.scan_errors:
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print("ERRORS")
-        print(f"{'='*60}")
+        print(f"{'=' * 60}")
         for error in report.scan_errors:
             print(f"  - {error}")
 
