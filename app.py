@@ -19,7 +19,7 @@ from traceboard.ui.views import (
 def configure_page() -> None:
     st.set_page_config(
         page_title="Traceboard",
-        page_icon="◈",
+        page_icon="https://www.perplexity.ai/favicon.ico",
         layout="wide",
         initial_sidebar_state="expanded",
     )
