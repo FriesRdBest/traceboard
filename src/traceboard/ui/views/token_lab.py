@@ -7,7 +7,11 @@ from traceboard.ui.components import close_panel, panel, table
 
 def render() -> None:
     with st.container(border=False):
-        panel("Token inventory", "Inspect the primitives that prevent local visual improvisation.")
+        panel(
+            "Token inventory",
+            "Inspect the primitives that prevent local visual improvisation.",
+            elevation="raised",
+        )
         table(
             ("Token", "Value", "Role"),
             (
@@ -18,13 +22,9 @@ def render() -> None:
                 ("--border-subtle", "10% white", "Quiet boundary"),
             ),
         )
-        close_panel()
-    with st.container(border=False):
-        panel(
-            "Token preview",
-            "A controlled preview of surface and elevation relationships.",
-            elevation="raised",
-        )
+        st.markdown("### Token preview")
+        st.caption("A controlled preview of surface and elevation relationships.")
+
         a, b, c = st.columns(3)
         for col, name, color in (
             (a, "Canvas", "#0A2528"),
@@ -33,7 +33,18 @@ def render() -> None:
         ):
             with col:
                 st.markdown(
-                    f'<div style="height:96px;border-radius:8px;border:1px solid rgba(214,232,229,.16);background:{color};display:flex;align-items:flex-end;padding:12px;font-size:12px">{name}</div>',
+                    f"""
+                    <div style="
+                        height:96px;
+                        border-radius:8px;
+                        border:1px solid rgba(214,232,229,.16);
+                        background:{color};
+                        display:flex;
+                        align-items:flex-end;
+                        padding:12px;
+                        font-size:12px;
+                    ">{name}</div>
+                    """,
                     unsafe_allow_html=True,
                 )
         close_panel()
