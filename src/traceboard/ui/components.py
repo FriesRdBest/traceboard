@@ -91,6 +91,84 @@ def render_decision_row(
     )
 
 
+def render_citation_card(
+    title: str,
+    excerpt: str,
+    *,
+    source_type: str = "SOURCE",
+    credibility: str = "Unverified",
+    tone: str = "neutral",
+) -> str:
+    """Render a compact evidence citation card."""
+    return f"""
+    <article class="tb-citation-card tb-tone-{tone}">
+      <div class="tb-citation-card__meta">
+        <span class="tb-badge tb-badge--{tone}">{source_type}</span>
+        <span class="tb-citation-card__credibility">{credibility}</span>
+      </div>
+      <h4 class="tb-citation-card__title">{title}</h4>
+      <p class="tb-citation-card__excerpt">{excerpt}</p>
+    </article>
+    """
+
+
+def render_trace_row(
+    source: str,
+    decision: str,
+    outcome: str,
+    status: str,
+    *,
+    tone: str = "neutral",
+) -> str:
+    """Render one evidence-to-decision trace row."""
+    return f"""
+    <div class="tb-trace-row tb-tone-{tone}">
+      <span class="tb-trace-row__source">{source}</span>
+      <span class="tb-trace-row__arrow" aria-hidden="true">→</span>
+      <span class="tb-trace-row__decision">{decision}</span>
+      <span class="tb-trace-row__arrow" aria-hidden="true">→</span>
+      <span class="tb-trace-row__outcome">{outcome}</span>
+      <span class="tb-badge tb-badge--{tone}">{status}</span>
+    </div>
+    """
+
+
+def render_empty_state(title: str, message: str) -> str:
+    """Render a predictable empty state for incomplete workflows."""
+    return f"""
+    <section class="tb-empty-state" role="status">
+      <h3>{title}</h3>
+      <p>{message}</p>
+    </section>
+    """
+
+
+def render_evidence_list(
+    evidence_items: Iterable[Mapping[str, str]],
+) -> str:
+    """Render evidence records as reusable citation cards."""
+    cards: list[str] = []
+
+    for item in evidence_items:
+        cards.append(
+            render_citation_card(
+                item.get("title", "Untitled source"),
+                item.get("excerpt", ""),
+                source_type=item.get("type", "SOURCE"),
+                credibility=item.get("status", "Unverified"),
+                tone=item.get("tone", "neutral"),
+            )
+        )
+
+    if not cards:
+        return render_empty_state(
+            "No evidence attached",
+            "Attach a source before this decision can advance.",
+        )
+
+    return '<div class="tb-evidence-list">' + "".join(card.strip() for card in cards) + "</div>"
+
+
 def table(headers: Iterable[str], rows: Iterable[Iterable[str]]) -> str:
     header_markup = "".join(f"<th>{esc(item)}</th>" for item in headers)
     row_markup = "".join(

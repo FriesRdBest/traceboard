@@ -2,7 +2,14 @@ from __future__ import annotations
 
 import streamlit as st
 
-from traceboard.ui.components import badge, close_panel, panel, table
+from traceboard.ui.components import (
+    badge,
+    close_panel,
+    panel,
+    render_evidence_list,
+    render_trace_row,
+    table,
+)
 
 
 def render() -> None:
@@ -25,4 +32,28 @@ def render() -> None:
             ),
         )
         st.markdown(f"Current contract: {badge(component, 'accent')}", unsafe_allow_html=True)
+        st.markdown(
+            render_trace_row(
+                "Component anatomy",
+                "Contract review",
+                "Implementation approval",
+                "Defined",
+                tone="success",
+            ),
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            render_evidence_list(
+                [
+                    {
+                        "type": "CONTRACT",
+                        "status": "Defined",
+                        "title": f"{component} behavior contract",
+                        "excerpt": "Anatomy, interaction, content resilience, and accessibility expectations are explicit.",
+                        "tone": "success",
+                    }
+                ]
+            ),
+            unsafe_allow_html=True,
+        )
         close_panel()

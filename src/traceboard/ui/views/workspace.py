@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from collections.abc import Iterable, Mapping
 
 
+from traceboard.ui.components import render_trace_row
 from traceboard.ui.views.common import RELEASES, SOURCES
 
 
@@ -106,6 +107,15 @@ def render() -> None:
             "Ready",
             "No blocking gate failures",
             "success",
+        )
+        + "</section>"
+        '<section class="tb-workspace-trace" aria-label="Evidence trace">'
+        + render_trace_row(
+            "Evidence pulse",
+            "Governance decision",
+            "Release trace",
+            "Active",
+            tone="success",
         )
         + "</section>"
         '<section class="tb-decision-grid">'
