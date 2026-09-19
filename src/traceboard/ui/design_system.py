@@ -718,6 +718,29 @@ body,
   margin-top: var(--tb-space-2);
 }
 
+
+.tb-table-wrap .tb-table th,
+.tb-table-wrap .tb-table td {
+  padding: 14px 20px !important;
+  text-align: left !important;
+  vertical-align: middle !important;
+  line-height: 1.45 !important;
+}
+
+.tb-table-wrap .tb-table th:first-child,
+.tb-table-wrap .tb-table td:first-child {
+  padding-left: 24px !important;
+}
+
+.tb-table-wrap .tb-table th:last-child,
+.tb-table-wrap .tb-table td:last-child {
+  padding-right: 24px !important;
+}
+
+.tb-table-wrap .tb-table tbody tr + tr td {
+  border-top: 1px solid var(--tb-line-soft);
+}
+
 .tb-evidence-list {
   display: grid;
   gap: var(--tb-space-4);
