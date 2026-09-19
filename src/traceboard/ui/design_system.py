@@ -660,6 +660,84 @@ body,
   margin-top: 9px;
 }
 
+
+.tb-citation-card {
+  display: grid;
+  gap: var(--tb-space-2);
+  padding: var(--tb-space-4);
+  border: 1px solid var(--tb-line-soft);
+  border-radius: var(--tb-radius-small);
+  background: var(--tb-surface-inset);
+}
+
+.tb-citation-card__meta,
+.tb-trace-row {
+  display: flex;
+  align-items: center;
+  gap: var(--tb-space-2);
+  flex-wrap: wrap;
+}
+
+.tb-citation-card__credibility {
+  color: var(--tb-text-muted);
+  font-size: var(--tb-font-size-small);
+}
+
+.tb-citation-card__title {
+  margin: 0;
+}
+
+.tb-citation-card__excerpt {
+  margin: 0;
+  color: var(--tb-text-muted);
+}
+
+.tb-trace-row {
+  padding: var(--tb-space-3) 0;
+  border-bottom: 1px solid var(--tb-line-soft);
+}
+
+.tb-trace-row__arrow {
+  color: var(--tb-text-muted);
+}
+
+.tb-empty-state {
+  padding: var(--tb-space-6);
+  border: 1px dashed var(--tb-line-soft);
+  border-radius: var(--tb-radius-small);
+  color: var(--tb-text-muted);
+  text-align: center;
+}
+
+.tb-empty-state h3,
+.tb-empty-state p {
+  margin: 0;
+}
+
+.tb-empty-state p {
+  margin-top: var(--tb-space-2);
+}
+
+.tb-evidence-list {
+  display: grid;
+  gap: var(--tb-space-4);
+}
+
+.tb-badge--neutral {
+  color: var(--tb-text-muted);
+}
+
+.tb-badge--success {
+  color: var(--tb-success);
+}
+
+.tb-badge--info {
+  color: var(--tb-info);
+}
+
+.tb-badge--warning {
+  color: var(--tb-warning);
+}
 """
 
 
