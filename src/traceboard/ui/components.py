@@ -166,7 +166,7 @@ def render_evidence_list(
             "Attach a source before this decision can advance.",
         )
 
-    return f'<div class="tb-evidence-list">{"".join(cards)}</div>'
+    return '<div class="tb-evidence-list">' + "".join(card.strip() for card in cards) + "</div>"
 
 
 def table(headers: Iterable[str], rows: Iterable[Iterable[str]]) -> str:
