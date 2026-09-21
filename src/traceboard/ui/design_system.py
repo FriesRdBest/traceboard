@@ -47,11 +47,16 @@ body,
   color: var(--tb-text);
 }
 
-[data-testid="stHeader"],
 [data-testid="stToolbar"],
 [data-testid="stDecoration"],
 [data-testid="stStatusWidget"] {
   display: none;
+}
+
+/* Keep Streamlit's sidebar expand/collapse control available. */
+[data-testid="stHeader"] {
+  display: block;
+  background: transparent;
 }
 
 [data-testid="stAppViewContainer"] > .main {
