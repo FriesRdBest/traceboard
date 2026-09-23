@@ -13,6 +13,14 @@ class FileLanguage(StrEnum):
     CSS = "css"
 
 
+class UsageType(StrEnum):
+    """Type of token usage."""
+
+    DIRECT = "direct"
+    ALIAS = "alias"
+    DERIVED = "derived"
+
+
 @dataclass(frozen=True)
 class TokenUsage:
     """A single usage of a design token."""
@@ -23,6 +31,7 @@ class TokenUsage:
     column: int | None = None
     value: str | None = None
     context: str | None = None
+    usage_type: UsageType | None = None
 
 
 @dataclass(frozen=True)
