@@ -1,230 +1,74 @@
-"""Shared Traceboard UI components."""
-
 from __future__ import annotations
 
-import html
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import streamlit as st
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable, Mapping
-
-    from traceboard.ui.navigation import NavItem
-
-
-def esc(value: object) -> str:
-    return html.escape(str(value))
-
-
-def markup(value: str) -> None:
-    st.markdown(value, unsafe_allow_html=True)
-
-
-def badge(label: str, tone: str = "neutral") -> str:
-    return f'<span class="tb-badge" data-tone="{esc(tone)}">{esc(label)}</span>'
-
-
-def render_status(label: str, tone: str = "neutral") -> None:
-    markup(badge(label, tone))
-
-
-def render_view_header(item: NavItem) -> None:
-    markup(
-        '<header class="tb-view-head">'
-        f'<div class="tb-eyebrow">{esc(item.eyebrow)}</div>'
-        f'<h1 class="tb-view-title">{esc(item.label)}</h1>'
-        f'<p class="tb-view-description">{esc(item.description)}</p>'
-        "</header>"
-    )
-
-
-def render_signal(
-    label: str,
-    value: str,
-    detail: str,
-    tone: str = "neutral",
-) -> None:
-    markup(
-        f'<article class="tb-signal" data-tone="{esc(tone)}">'
-        f'<div class="tb-label">{esc(label)}</div>'
-        f'<div class="tb-signal-value">{esc(value)}</div>'
-        f'<div class="tb-signal-detail">{esc(detail)}</div>'
-        "</article>"
-    )
-
-
-def render_panel(
-    label: str,
-    title: str,
-    description: str,
-    body: str,
-    *,
-    tone: str = "neutral",
-) -> None:
-    markup(
-        f'<article class="tb-panel" data-tone="{esc(tone)}">'
-        '<header class="tb-panel-head">'
-        f'<div class="tb-label">{esc(label)}</div>'
-        f'<h2 class="tb-panel-title">{esc(title)}</h2>'
-        f'<p class="tb-panel-description">{esc(description)}</p>'
-        "</header>"
-        f'<div class="tb-panel-body">{body}</div>'
-        "</article>"
-    )
-
-
-def render_decision_row(
-    evidence: str,
-    decision: str,
-    contract: str,
-    state: str,
-    tone: str = "neutral",
-) -> str:
-    return (
-        '<div class="tb-decision-row">'
-        f'<div class="tb-decision-evidence">{esc(evidence)}</div>'
-        f'<div class="tb-decision-main">{esc(decision)}</div>'
-        f'<div class="tb-decision-contract">{esc(contract)}</div>'
-        f'<div class="tb-decision-state">{badge(state, tone)}</div>'
-        "</div>"
-    )
-
-
-def render_citation_card(
-    title: str,
-    excerpt: str,
-    *,
-    source_type: str = "SOURCE",
-    credibility: str = "Unverified",
-    tone: str = "neutral",
-) -> str:
-    """Render a compact evidence citation card."""
-    return f"""
-    <article class="tb-citation-card tb-tone-{tone}">
-      <div class="tb-citation-card__meta">
-        <span class="tb-badge tb-badge--{tone}">{source_type}</span>
-        <span class="tb-citation-card__credibility">{credibility}</span>
-      </div>
-      <h4 class="tb-citation-card__title">{title}</h4>
-      <p class="tb-citation-card__excerpt">{excerpt}</p>
-    </article>
-    """
-
-
-def render_trace_row(
-    source: str,
-    decision: str,
-    outcome: str,
-    status: str,
-    *,
-    tone: str = "neutral",
-) -> str:
-    """Render one evidence-to-decision trace row."""
-    return f"""
-    <div class="tb-trace-row tb-tone-{tone}">
-      <span class="tb-trace-row__source">{source}</span>
-      <span class="tb-trace-row__arrow" aria-hidden="true">→</span>
-      <span class="tb-trace-row__decision">{decision}</span>
-      <span class="tb-trace-row__arrow" aria-hidden="true">→</span>
-      <span class="tb-trace-row__outcome">{outcome}</span>
-      <span class="tb-badge tb-badge--{tone}">{status}</span>
-    </div>
-    """
-
-
-def render_empty_state(title: str, message: str) -> str:
-    """Render a predictable empty state for incomplete workflows."""
-    return f"""
-    <section class="tb-empty-state" role="status">
-      <h3>{title}</h3>
-      <p>{message}</p>
-    </section>
-    """
-
-
-def render_evidence_list(
-    evidence_items: Iterable[Mapping[str, str]],
-) -> str:
-    """Render evidence records as reusable citation cards."""
-    cards: list[str] = []
-
-    for item in evidence_items:
-        cards.append(
-            render_citation_card(
-                item.get("title", "Untitled source"),
-                item.get("excerpt", ""),
-                source_type=item.get("type", "SOURCE"),
-                credibility=item.get("status", "Unverified"),
-                tone=item.get("tone", "neutral"),
-            )
-        )
-
-    if not cards:
-        return render_empty_state(
-            "No evidence attached",
-            "Attach a source before this decision can advance.",
-        )
-
-    return '<div class="tb-evidence-list">' + "".join(card.strip() for card in cards) + "</div>"
-
-
-def table(headers: Iterable[str], rows: Iterable[Iterable[str]]) -> str:
-    header_markup = "".join(f"<th>{esc(item)}</th>" for item in headers)
-    row_markup = "".join(
-        "<tr>" + "".join(f"<td>{esc(cell)}</td>" for cell in row) + "</tr>" for row in rows
-    )
-    return (
-        '<div class="tb-table-wrap"><table class="tb-table">'
-        f"<thead><tr>{header_markup}</tr></thead>"
-        f"<tbody>{row_markup}</tbody></table></div>"
-    )
-
-
-def sources(sources_data: Iterable[Mapping[str, str]]) -> str:
-    items: list[str] = []
-    for source in sources_data:
-        items.append(
-            '<div class="tb-source">'
-            '<div class="tb-source-meta">'
-            f"{esc(source.get('type', 'SOURCE'))}"
-            f"{badge(source.get('status', 'UNVERIFIED'), 'success')}"
-            "</div>"
-            f'<div class="tb-source-title">{esc(source.get("title", "Untitled source"))}</div>'
-            f'<div class="tb-source-excerpt">{esc(source.get("excerpt", ""))}</div>'
-            "</div>"
-        )
-    return f'<div class="tb-sources">{"".join(items)}</div>'
+    from collections.abc import Iterable
 
 
 def render_theme_toggle() -> None:
     """Compatibility hook retained for host integration."""
-    return None
+    return
 
 
 def close_panel() -> None:
     """Compatibility no-op for legacy views."""
-    return None
+    return
 
 
-def panel(
+def render_header(title: str, subtitle: str | None = None) -> None:
+    """Render a standard header block."""
+    st.markdown(f"# {title}")
+    if subtitle:
+        st.markdown(subtitle)
+
+
+def render_metric_card(label: str, value: Any, delta: str | None = None) -> None:
+    """Render a simple metric card."""
+    if delta:
+        st.metric(label=label, value=value, delta=delta)
+    else:
+        st.metric(label=label, value=value)
+
+
+def render_citation_card(
     title: str,
-    description: str | None = None,
-    *,
-    elevation: str = "panel",
+    source: str,
+    url: str | None = None,
+    snippet: str | None = None,
 ) -> None:
-    """Compatibility opener for legacy views.
+    """Render a citation card for evidence-backed claims."""
+    with st.expander(title, expanded=False):
+        st.markdown(f"**Source:** {source}")
+        if url:
+            st.markdown(f"[Link]({url})")
+        if snippet:
+            st.markdown(f"> {snippet}")
 
-    The legacy API remains available, but page context is intentionally
-    quieter than a data panel.
-    """
-    description_markup = (
-        f'<p class="tb-panel-description">{esc(description)}</p>' if description else ""
-    )
-    markup(
-        f'<section class="tb-legacy-context" data-tone="{esc(elevation)}">'
-        '<div class="tb-label">TRACEBOARD</div>'
-        f'<h1 class="tb-view-title">{esc(title)}</h1>'
-        f"{description_markup}"
-        "</section>"
-    )
+
+def render_empty_state(title: str, message: str | None = None) -> None:
+    """Render an empty state panel."""
+    st.info(title)
+    if message:
+        st.markdown(message)
+
+
+def render_evidence_list(items: "Iterable[dict[str, Any]]") -> None:
+    """Render a simple list of evidence items."""
+    for item in items:
+        label = item.get("label", "Evidence")
+        value = item.get("value", "")
+        st.markdown(f"**{label}:** {value}")
+
+
+def render_trace_row(token_name: str, usages: list[dict[str, Any]]) -> None:
+    """Render a single token trace row in a table-like layout."""
+    with st.expander(token_name, expanded=False):
+        for usage in usages:
+            file_path = usage.get("file_path", usage.get("path", ""))
+            line = usage.get("line", "")
+            value = usage.get("value", "")
+            parts = [p for p in [file_path, line, value] if p]
+            st.markdown(" • ".join(str(p) for p in parts))
