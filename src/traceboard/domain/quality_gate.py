@@ -24,6 +24,17 @@ class QualityGateResult:
 
 
 @dataclass(frozen=True)
+class QualityGateRule:
+    """A single rule within a quality gate."""
+
+    id: str
+    name: str
+    threshold: float | None = None
+    description: str | None = None
+    metadata: dict[str, str] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
 class QualityGate:
     """A quality gate definition."""
 

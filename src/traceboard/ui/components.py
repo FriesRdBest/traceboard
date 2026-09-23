@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Iterable
 
 import streamlit as st
 
@@ -50,3 +50,11 @@ def render_empty_state(title: str, message: str | None = None) -> None:
     st.info(title)
     if message:
         st.markdown(message)
+
+
+def render_evidence_list(items: Iterable[dict[str, Any]]) -> None:
+    """Render a simple list of evidence items."""
+    for item in items:
+        label = item.get("label", "Evidence")
+        value = item.get("value", "")
+        st.markdown(f"**{label}:** {value}")
