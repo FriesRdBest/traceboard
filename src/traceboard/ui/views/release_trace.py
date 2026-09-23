@@ -37,14 +37,20 @@ def render() -> None:
                         "type": "RECORD",
                         "status": "Reviewed",
                         "title": "Release decision record",
-                        "excerpt": "The release surface is linked to an approved contribution and quality evaluation.",
+                        "excerpt": (
+                            "The release surface is linked to an approved "
+                            "contribution and quality evaluation."
+                        ),
                         "tone": "success",
                     },
                     {
                         "type": "GUIDANCE",
                         "status": "Verified",
                         "title": "System Story evidence",
-                        "excerpt": "The visible narrative remains grounded in the same traceable system record.",
+                        "excerpt": (
+                            "The visible narrative remains grounded in "
+                            "the same traceable system record."
+                        ),
                         "tone": "info",
                     },
                 ]
@@ -53,6 +59,8 @@ def render() -> None:
         )
         st.divider()
         st.caption(
-            "Local demo data is deterministic. Persistence is intentionally deferred until the integration contract is approved."
+            "Local demo data is deterministic. "
+            "Persistence is intentionally deferred until "
+            "the integration contract is approved."
         )
         close_panel()

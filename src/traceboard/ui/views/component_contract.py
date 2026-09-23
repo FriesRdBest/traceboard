@@ -49,7 +49,10 @@ def render() -> None:
                         "type": "CONTRACT",
                         "status": "Defined",
                         "title": f"{component} behavior contract",
-                        "excerpt": "Anatomy, interaction, content resilience, and accessibility expectations are explicit.",
+                        "excerpt": (
+                            "Anatomy, interaction, content resilience, "
+                            "and accessibility expectations are explicit."
+                        ),
                         "tone": "success",
                     }
                 ]
