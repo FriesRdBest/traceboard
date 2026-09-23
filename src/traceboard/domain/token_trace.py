@@ -14,6 +14,18 @@ class FileLanguage(StrEnum):
 
 
 @dataclass(frozen=True)
+class TokenUsage:
+    """A single usage of a design token."""
+
+    token_name: str
+    file_path: str
+    line: int | None = None
+    column: int | None = None
+    value: str | None = None
+    context: str | None = None
+
+
+@dataclass(frozen=True)
 class ScanResult:
     """Result of scanning a single file."""
 

@@ -12,6 +12,15 @@ class GateResultStatus(StrEnum):
     WARN = "warn"
 
 
+class RuleType(StrEnum):
+    """Type of a quality gate rule."""
+
+    TOKEN_VERSION = "token_version"
+    COMPONENT_ALIGNMENT = "component_alignment"
+    COVERAGE = "coverage"
+    CUSTOM = "custom"
+
+
 @dataclass(frozen=True)
 class QualityGateResult:
     """Result of evaluating a quality gate in a context."""
@@ -29,6 +38,7 @@ class QualityGateRule:
 
     id: str
     name: str
+    rule_type: RuleType | None = None
     threshold: float | None = None
     description: str | None = None
     metadata: dict[str, str] = field(default_factory=dict)

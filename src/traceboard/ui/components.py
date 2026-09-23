@@ -58,3 +58,14 @@ def render_evidence_list(items: Iterable[dict[str, Any]]) -> None:
         label = item.get("label", "Evidence")
         value = item.get("value", "")
         st.markdown(f"**{label}:** {value}")
+
+
+def render_trace_row(token_name: str, usages: list[dict[str, Any]]) -> None:
+    """Render a single token trace row in a table-like layout."""
+    with st.expander(token_name, expanded=False):
+        for usage in usages:
+            file_path = usage.get("file_path", usage.get("path", ""))
+            line = usage.get("line", "")
+            value = usage.get("value", "")
+            parts = [p for p in [file_path, line, value] if p]
+            st.markdown(" • ".join(str(p) for p in parts))
