@@ -763,6 +763,22 @@ body,
 .tb-badge--warning {
   color: var(--tb-warning);
 }
+
+/* Collapsed workspace geometry */
+@media (min-width: 769px) {
+  [data-testid="stAppViewContainer"] > .main > .block-container {
+    width: min(100% - 96px, 1380px);
+    max-width: 1380px;
+  }
+}
+
+@media (max-width: 768px) {
+  [data-testid="stAppViewContainer"] > .main > .block-container {
+    width: 100%;
+    max-width: none;
+  }
+}
+
 """
 
 
