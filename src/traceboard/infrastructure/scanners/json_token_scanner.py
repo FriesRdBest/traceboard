@@ -1,120 +1,127 @@
 from __future__ import annotations
 
 import json
-import re
-from typing import TYPE_CHECKING, Any
+import logging
+from dataclasses import dataclass
+from typing import Any, Callable
 
-from ...application.ports.token_scanner import TokenScanner
-from ...domain.token_trace import (
-    FileLanguage,
-    TokenTrace,
-    TokenUsage,
-    TraceReport,
-    UsageType,
-)
+from traceboard.application.ports.token_scanner import TokenScanner
+from traceboard.domain.token_trace import TokenTrace, TraceReport, ScanResult
 
-if TYPE_CHECKING:
-    from collections.abc import Callable
+logger = logging.getLogger(__name__)
 
 
-TOKEN_PATTERN = re.compile(r'["\']?(--[a-zA-Z0-9_-]+)["\']?')
+@dataclass(frozen=True)
+class JsonTokenUsage:
+    """A token usage found in JSON."""
+
+    token_name: str
+    path: str
+    value: str
 
 
 class JsonTokenScanner(TokenScanner):
-    """Scans JSON files for design token references."""
+    """Scans JSON files for design token usages."""
+
+    def __init__(self, token_prefix: str = "--") -> None:
+        self._token_prefix = token_prefix
 
     def scan_file(self, file_path: str, content: str) -> tuple[TokenTrace, ...]:
-        traces: dict[str, list[TokenUsage]] = {}
-
+        """Scan a single JSON file and return token traces."""
         try:
             data = json.loads(content)
-            lines = content.split("\n")
+        except json.JSONDecodeError as e:
+            logger.warning("Invalid JSON in %s: %s", file_path, e)
+            return ()
 
-            self._scan_value(data, file_path, lines, traces, path="")
-        except json.JSONDecodeError:
-            pass
+        usages = self._extract_usages(data, file_path)
+        return self._group_usages_into_traces(usages)
 
-        return tuple(
-            TokenTrace(token_name=name, usages=tuple(usages)) for name, usages in traces.items()
-        )
-
-    def _scan_value(
-        self,
-        value: Any,
-        file_path: str,
-        lines: list[str],
-        traces: dict[str, list[TokenUsage]],
-        path: str,
-    ) -> None:
-        if isinstance(value, str):
-            self._scan_string(value, file_path, lines, traces, path)
-        elif isinstance(value, dict):
-            for key, val in value.items():  # type: ignore
-                new_path = f"{path}.{key}" if path else f"{key}"
-                self._scan_value(val, file_path, lines, traces, new_path)
-        elif isinstance(value, list):
-            for i, item in enumerate(value):  # type: ignore
-                new_path = f"{path}[{i}]"
-                self._scan_value(item, file_path, lines, traces, new_path)
-
-    def _scan_string(
-        self,
-        value: str,
-        file_path: str,
-        lines: list[str],
-        traces: dict[str, list[TokenUsage]],
-        path: str,
-    ) -> None:
-        for match in TOKEN_PATTERN.finditer(value):
-            token_name = match.group(1)
-
-            actual_line = 1
-            actual_column = 1
-            for i, line in enumerate(lines, 1):
-                if token_name in line:
-                    actual_line = i
-                    actual_column = line.find(token_name) + 1
-                    break
-
-            usage = TokenUsage(
-                token_name=token_name,
-                file_path=file_path,
-                line_number=actual_line,
-                column=actual_column,
-                usage_type=UsageType.DIRECT,
-                context=value[:50] + "..." if len(value) > 50 else value,
-                language=FileLanguage.JSON,
-            )
-
-            if token_name not in traces:
-                traces[token_name] = []
-            traces[token_name].append(usage)
-
-    def scan_files(self, file_paths: list[str], read_file: Callable[[str], str]) -> TraceReport:
-        all_traces: dict[str, list[TokenUsage]] = {}
+    def scan_files(
+        self, file_paths: list[str], read_file: Callable[[str], str]
+    ) -> TraceReport:
+        """Scan multiple JSON files and return a trace report."""
+        scan_results: list[ScanResult] = []
         errors: list[str] = []
-        scanned: list[str] = []
 
         for file_path in file_paths:
             try:
                 content = read_file(file_path)
-                scanned.append(file_path)
+            except FileNotFoundError:
+                errors.append(f"{file_path}: file not found")
+                continue
+            except OSError as e:
+                errors.append(f"{file_path}: {e!s}")
+                continue
 
-                file_traces = self.scan_file(file_path, content)
-                for trace in file_traces:
-                    if trace.token_name not in all_traces:
-                        all_traces[trace.token_name] = []
-                    all_traces[trace.token_name].extend(trace.usages)
-
-            except Exception as e:
+            try:
+                traces = self.scan_file(file_path, content)
+                scan_results.append(ScanResult(file_path=file_path, traces=traces))
+            except ValueError as e:
+                errors.append(f"{file_path}: {e}")
+            except Exception as e:  # noqa: BLE001
+                logger.exception("Unexpected error scanning %s", file_path)
                 errors.append(f"{file_path}: {e!s}")
 
-        token_traces = tuple(
-            TokenTrace(token_name=name, usages=tuple(usages)) for name, usages in all_traces.items()
-        )
+        return TraceReport(scan_results=scan_results, scan_errors=errors)
 
-        return TraceReport(
-            scanned_files=tuple(scanned),
-            token_traces=token_traces,
-            scan_errors=tuple(errors),
-        )
+    def _extract_usages(self, data: Any, file_path: str) -> list[JsonTokenUsage]:
+        """Recursively extract token usages from a JSON structure."""
+        usages: list[JsonTokenUsage] = []
+        self._walk_json(data, [], usages, file_path)
+        return usages
+
+    def _walk_json(
+        self,
+        node: Any,
+        path: list[str],
+        usages: list[JsonTokenUsage],
+        file_path: str,
+    ) -> None:
+        if isinstance(node, dict):
+            for key, value in node.items():
+                self._walk_json(value, [*path, key], usages, file_path)
+        elif isinstance(node, list):
+            for idx, item in enumerate(node):
+                self._walk_json(item, [*path, str(idx)], usages, file_path)
+        elif isinstance(node, str):
+            for token_name in self._extract_tokens_from_string(node):
+                usages.append(
+                    JsonTokenUsage(
+                        token_name=token_name,
+                        path=".".join(path),
+                        value=node,
+                    )
+                )
+
+    def _extract_tokens_from_string(self, value: str) -> list[str]:
+        """Extract token names from a string value."""
+        tokens: list[str] = []
+        for part in value.split():
+            if part.startswith(self._token_prefix):
+                tokens.append(part)
+        return tokens
+
+    def _group_usages_into_traces(
+        self, usages: list[JsonTokenUsage]
+    ) -> tuple[TokenTrace, ...]:
+        """Group raw usages into token traces."""
+        by_token: dict[str, list[JsonTokenUsage]] = {}
+        for u in usages:
+            by_token.setdefault(u.token_name, []).append(u)
+
+        traces: list[TokenTrace] = []
+        for token_name, token_usages in by_token.items():
+            traces.append(
+                TokenTrace(
+                    token_name=token_name,
+                    usages=[
+                        {
+                            "path": u.path,
+                            "value": u.value,
+                        }
+                        for u in token_usages
+                    ],
+                )
+            )
+        return tuple(traces)
