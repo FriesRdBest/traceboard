@@ -19,11 +19,14 @@ def render() -> None:
         )
         st.markdown("### The system under pressure")
         st.write(
-            "Traceboard turns design-system work into an observable chain of decisions: contribution, contract, quality, and release."
+            "Traceboard turns design-system work into an observable chain "
+            "of decisions: contribution, contract, quality, and release."
         )
         st.markdown("### Operating principles")
         st.write(
-            "Prefer evidence over preference. Prefer shared primitives over local fixes. Prefer a visible blocked state over a silent compromise."
+            "Prefer evidence over preference. Prefer shared primitives "
+            "over local fixes. Prefer a visible blocked state over a "
+            "silent compromise."
         )
         st.markdown(
             render_trace_row(
@@ -42,7 +45,10 @@ def render() -> None:
                         "type": "PRINCIPLE",
                         "status": "Canonical",
                         "title": "Evidence over preference",
-                        "excerpt": "System decisions should remain explainable through their supporting record.",
+                        "excerpt": (
+                            "System decisions should remain explainable "
+                            "through their supporting record."
+                        ),
                         "tone": "success",
                     }
                 ]

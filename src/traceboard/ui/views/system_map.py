@@ -30,7 +30,10 @@ def render_system_map() -> None:
                     "type": "ARCHITECTURE",
                     "status": "Documented",
                     "title": "Layer boundary record",
-                    "excerpt": "Domain rules remain separate from application orchestration and UI composition.",
+                    "excerpt": (
+                        "Domain rules remain separate from application "
+                        "orchestration and UI composition."
+                    ),
                     "tone": "info",
                 }
             ]
