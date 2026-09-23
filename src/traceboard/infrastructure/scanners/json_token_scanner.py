@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import json
 import logging
-from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 from traceboard.application.ports.token_scanner import TokenScanner
 from traceboard.domain.token_trace import ScanResult, TokenTrace, TraceReport

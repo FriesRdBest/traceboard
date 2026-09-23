@@ -9,5 +9,5 @@ def today_label() -> str:
 
 
 def format_percentage(value: float) -> str:
-    """Format a 0–1 value as a percentage string."""
+    """Format a 0-1 value as a percentage string."""
     return f"{value:.1%}"

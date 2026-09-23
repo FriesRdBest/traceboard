@@ -43,3 +43,10 @@ def render_citation_card(
             st.markdown(f"[Link]({url})")
         if snippet:
             st.markdown(f"> {snippet}")
+
+
+def render_empty_state(title: str, message: str | None = None) -> None:
+    """Render an empty state panel."""
+    st.info(title)
+    if message:
+        st.markdown(message)

@@ -1,16 +1,24 @@
 from __future__ import annotations
 
 import logging
-from collections.abc import Callable
 from dataclasses import dataclass
-
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from traceboard.application.ports.token_scanner import TokenScanner
     from traceboard.domain.token_trace import TokenTrace
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass(frozen=True)
+class ScanDirectoryCommand:
+    """Command to scan a directory for token traces."""
+
+    directory: str
+    patterns: tuple[str, ...] = ("*.json",)
 
 
 @dataclass(frozen=True)
@@ -37,10 +45,8 @@ class TraceService:
                     all_traces.setdefault(trace.token_name, []).append(trace)
                 errors.extend(report.scan_errors)
             except ValueError as e:
-                # Scanner-level errors for a specific file
                 errors.append(f"Scanner error for {scan_result.file_path}: {e}")
             except Exception as e:
-                # Fallback for unexpected errors; logged and surfaced as strings
                 logger.exception("Unexpected error during trace")
                 errors.append(f"Unexpected scanner error: {e!s}")
 
