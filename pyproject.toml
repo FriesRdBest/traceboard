@@ -14,7 +14,7 @@ authors = [
   { name = "Perplexity Design Systems", email = "design-systems@perplexity.ai" }
 ]
 dependencies = [
-  "pydantic>=2.9.0",
+  "pydantic>=2.13.5",
   "streamlit>=1.52.0,<2.0.0",
 ]
 
