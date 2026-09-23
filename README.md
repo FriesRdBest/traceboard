@@ -1,24 +1,46 @@
-# Traceboard
+# traceboard
 
-A live design-system governance control room built with Python and Streamlit.
+A governance dashboard for Perplexity that traces assets from design file to live code across product surfaces. Built with Python and Streamlit.
 
-## Run locally
+## Features
+
+- **Design token governance** — Track and validate tokens across components and surfaces.
+- **Component standards** — Enforce consistent patterns and accessibility rules.
+- **Asset tracing** — Link design artifacts to implementation and deployment.
+- **Quality checks** — Run automated checks across multiple product surfaces.
+
+## Local development
+
+### Requirements
+
+- Python 3.10 or later
+- `pip`
+
+### Setup
 
 ```bash
-pip install -e .
-streamlit run app.py
+git clone https://github.com/FriesRdBest/traceboard.git
+cd traceboard
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m streamlit run app.py
 ```
 
-The first implementation branch, `feat/traceboard-design-system`, contains the complete pre-test scaffold through the responsive and accessibility implementation phase. It uses deterministic local demo data and preserves the layered package structure.
+On Windows PowerShell:
 
-## Surfaces
+```powershell
+.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python -m streamlit run app.py
+```
 
-- Workspace
-- Contribution Intake
-- Token Lab
-- Component Contract
-- Quality Gate
-- The Odyssey 2026
-- Release Trace
+## Contributing
 
-Persistence and external data integrations remain intentionally deferred until the local interaction contract is validated.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening an issue or pull request.
+
+## License
+
+Copyright 2026 Robin Sylvester.
+
+Licensed under the [Apache License, Version 2.0](LICENSE).
