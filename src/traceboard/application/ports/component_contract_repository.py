@@ -2,8 +2,11 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from traceboard.domain.component_contract import ComponentContract
-from traceboard.domain.divergence_report import DivergenceReport
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from traceboard.domain.component_contract import ComponentContract
+    from traceboard.domain.divergence_report import DivergenceReport
 
 
 class ComponentContractRepository(ABC):

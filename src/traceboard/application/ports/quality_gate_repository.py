@@ -2,7 +2,10 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from traceboard.domain.quality_gate import GateEvaluationResult, QualityGate
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from traceboard.domain.quality_gate import GateEvaluationResult, QualityGate
 
 
 class QualityGateRepository(ABC):

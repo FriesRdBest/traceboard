@@ -6,10 +6,13 @@ They are intentionally small but serious: focused on invariants, edge cases, and
 
 from __future__ import annotations
 
-from collections.abc import Iterable
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 import pytest
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 # In a real repo these would import from src/traceboard/domain & application.
 # For this example we define minimal stand-ins to keep the file self-contained.

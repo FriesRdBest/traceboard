@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Protocol
 
-from traceboard.application.ports.token_scanner import TokenScanner
-from traceboard.domain.token_trace import TokenTrace, TraceReport
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from traceboard.application.ports.token_scanner import TokenScanner
+    from traceboard.domain.token_trace import TokenTrace
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +39,7 @@ class TraceService:
             except ValueError as e:
                 # Scanner-level errors for a specific file
                 errors.append(f"Scanner error for {scan_result.file_path}: {e}")
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 # Fallback for unexpected errors; logged and surfaced as strings
                 logger.exception("Unexpected error during trace")
                 errors.append(f"Unexpected scanner error: {e!s}")

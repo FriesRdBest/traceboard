@@ -1,6 +1,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from enum import Enum
+
+
+class GateResultStatus(str, Enum):
+    """Status of a quality gate evaluation."""
+
+    PASS = "pass"
+    FAIL = "fail"
+    WARN = "warn"
 
 
 @dataclass(frozen=True)

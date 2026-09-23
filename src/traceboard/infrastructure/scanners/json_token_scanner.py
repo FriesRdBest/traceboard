@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import json
 import logging
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Callable
+from typing import Any
 
 from traceboard.application.ports.token_scanner import TokenScanner
-from traceboard.domain.token_trace import TokenTrace, TraceReport, ScanResult
+from traceboard.domain.token_trace import ScanResult, TokenTrace, TraceReport
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +60,7 @@ class JsonTokenScanner(TokenScanner):
                 scan_results.append(ScanResult(file_path=file_path, traces=traces))
             except ValueError as e:
                 errors.append(f"{file_path}: {e}")
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 logger.exception("Unexpected error scanning %s", file_path)
                 errors.append(f"{file_path}: {e!s}")
 
