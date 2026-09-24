@@ -22,8 +22,7 @@ jobs:
           python -m pip install --upgrade pip
           curl -sSL https://install.python-poetry.org | python3 -
           export PATH="$HOME/.local/bin:$PATH"
-          poetry install --no-root --only main --no-interaction
-          pip install ruff pyright pytest streamlit
+          poetry install --no-root --no-interaction
 
       - name: Ruff lint
         run: |
@@ -37,6 +36,6 @@ jobs:
         run: |
           pyright .
 
-      - name: Pytest
+      - name: Pytest with coverage
         run: |
-          pytest
+          pytest --cov=src/traceboard --cov-report=term-missing
