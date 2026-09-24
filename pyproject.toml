@@ -91,5 +91,6 @@ asyncio_mode = "auto"
 
 [dependency-groups]
 dev = [
-    "streamlit (>=1.64.0,<2.0.0)"
+    "streamlit (>=1.64.0,<2.0.0)",
+    "pytest-cov (>=7.1.0,<8.0.0)"
 ]
