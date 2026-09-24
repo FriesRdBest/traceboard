@@ -106,8 +106,8 @@ class JsonTokenScanner(TokenScanner):
                         all_traces[trace.token_name] = []
                     all_traces[trace.token_name].extend(trace.usages)
 
-            except Exception as e:
-                errors.append(f"{file_path}: {e!s}")
+            except (OSError, ValueError) as error:
+                errors.append(f"{file_path}: {error!s}")
 
         token_traces = tuple(
             TokenTrace(token_name=name, usages=tuple(usages)) for name, usages in all_traces.items()

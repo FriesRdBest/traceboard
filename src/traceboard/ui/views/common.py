@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import UTC, datetime
 
 SOURCES = [
     {
@@ -27,4 +27,4 @@ RELEASES = [
 
 
 def today_label() -> str:
-    return date.today().isoformat()
+    return datetime.now(tz=UTC).date().isoformat()

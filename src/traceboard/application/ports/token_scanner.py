@@ -15,9 +15,7 @@ class TokenScanner(ABC):
     @abstractmethod
     def scan_file(self, file_path: str, content: str) -> tuple[TokenTrace, ...]:
         """Scan a single file and return token traces found."""
-        pass
 
     @abstractmethod
     def scan_files(self, file_paths: list[str], read_file: Callable[[str], str]) -> TraceReport:
         """Scan multiple files and return a complete trace report."""
-        pass

@@ -199,12 +199,10 @@ def sources(sources_data: Iterable[Mapping[str, str]]) -> str:
 
 def render_theme_toggle() -> None:
     """Compatibility hook retained for host integration."""
-    return None
 
 
 def close_panel() -> None:
     """Compatibility no-op for legacy views."""
-    return None
 
 
 def panel(
