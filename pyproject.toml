@@ -91,5 +91,26 @@ asyncio_mode = "auto"
 
 [dependency-groups]
 dev = [
-    "streamlit (>=1.64.0,<2.0.0)"
+    "streamlit (>=1.64.0,<2.0.0)",
+    "pytest-cov (>=7.1.0,<8.0.0)"
+]
+
+[tool.coverage.run]
+source = ["src/traceboard"]
+branch = true
+omit = [
+  "*/tests/*",
+  "*/__pycache__/*",
+]
+
+[tool.coverage.report]
+fail_under = 60
+show_missing = true
+skip_covered = true
+exclude_lines = [
+  "pragma: no cover",
+  "if TYPE_CHECKING:",
+  "def __repr__",
+  "raise NotImplementedError",
+  "if __name__ == .__main__.:",
 ]
