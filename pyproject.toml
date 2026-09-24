@@ -88,3 +88,8 @@ reportImplicitStringConcatenation = false
 testpaths = ["tests"]
 pythonpath = ["src"]
 asyncio_mode = "auto"
+
+[dependency-groups]
+dev = [
+    "streamlit (>=1.64.0,<2.0.0)"
+]
