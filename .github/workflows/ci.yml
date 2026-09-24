@@ -17,29 +17,28 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: latest
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-
-      - name: Install dependencies
+      - name: Install dependencies (app + tools)
         run: |
-          poetry install --no-root --no-interaction
+          python -m pip install --upgrade pip
+          # Install app dependencies from poetry.lock via poetry
+          curl -sSL https://install.python-poetry.org | python3 -
+          export PATH="$HOME/.local/bin:$PATH"
+          poetry install --no-root --only main --no-interaction
+          # Install quality tools directly so they’re available in CI
+          pip install ruff pyright pytest
 
       - name: Ruff lint
         run: |
-          poetry run ruff check .
+          ruff check .
 
       - name: Ruff format check
         run: |
-          poetry run ruff format --check .
+          ruff format --check .
 
       - name: Pyright type check
         run: |
-          poetry run pyright .
+          pyright .
 
       - name: Pytest
         run: |
-          poetry run pytest
+          pytest
