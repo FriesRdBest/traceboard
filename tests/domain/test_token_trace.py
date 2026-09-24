@@ -100,8 +100,9 @@ def test_token_trace_summary() -> None:
     assert summary["token_name"] == "--color-primary"
     assert summary["usage_count"] == 2
     assert summary["file_count"] == 2
-    assert "src/button.css" in summary["files"]
-    assert "src/card.css" in summary["files"]
+    files = summary["files"]
+    assert isinstance(files, list) and "src/button.css" in files
+    assert isinstance(files, list) and "src/card.css" in files
 
 
 def test_trace_report_creation() -> None:
