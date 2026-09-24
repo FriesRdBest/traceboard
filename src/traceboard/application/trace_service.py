@@ -61,8 +61,8 @@ class TraceService:
                             all_traces[trace.token_name] = []
                         all_traces[trace.token_name].extend(trace.usages)
                     all_errors.extend(report.scan_errors)
-                except Exception as e:
-                    all_errors.append(f"Scanner error: {e!s}")
+                except (OSError, ValueError) as error:
+                    all_errors.append(f"Scanner error: {error!s}")
 
         token_traces = tuple(
             TokenTrace(token_name=name, usages=tuple(usages)) for name, usages in all_traces.items()

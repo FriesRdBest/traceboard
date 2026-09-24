@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum, auto
+from typing import cast
 
 
 class RuleType(Enum):
@@ -25,7 +26,7 @@ class QualityGateRule:
     rule_type: RuleType
     threshold: float | None = None
     description: str | None = None
-    metadata: dict[str, str] = field(default_factory=lambda: {})
+    metadata: dict[str, str] = field(default_factory=lambda: cast("dict[str, str]", {}))
 
 
 @dataclass(frozen=True)
