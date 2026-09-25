@@ -779,6 +779,44 @@ body,
   }
 }
 
+/* Sidebar toggle action labels */
+button[data-testid="stExpandSidebarButton"],
+button[data-testid="stBaseButton-headerNoPadding"] {
+  min-width: 88px !important;
+  min-height: 44px !important;
+  padding: 0 10px !important;
+  gap: 7px !important;
+  overflow: visible !important;
+}
+
+/* Collapsed sidebar: retain Streamlit's >> icon, then show the action. */
+button[data-testid="stExpandSidebarButton"]::after {
+  content: "Expand";
+  color: var(--tb-text) !important;
+  font: 700 12px/1 var(--tb-ui) !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap;
+}
+
+/* Open sidebar: retain Streamlit's << icon, then show the action. */
+button[data-testid="stBaseButton-headerNoPadding"]:has(
+  [data-testid="stIconMaterial"]
+)::after {
+  content: "Hide";
+  color: var(--tb-text) !important;
+  font: 700 12px/1 var(--tb-ui) !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap;
+}
+
+button[data-testid="stExpandSidebarButton"]:focus-visible,
+button[data-testid="stBaseButton-headerNoPadding"]:has(
+  [data-testid="stIconMaterial"]
+):focus-visible {
+  outline: 3px solid var(--tb-accent) !important;
+  outline-offset: 3px !important;
+}
+
 """
 
 
